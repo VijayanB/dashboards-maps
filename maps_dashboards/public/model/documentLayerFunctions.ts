@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Map as Maplibre, Popup, MapGeoJSONFeature } from 'maplibre-gl';
+import { Map as Maplibre} from 'maplibre-gl';
 import { createPopup, getPopupLngLat } from '../components/tooltip/create_tooltip';
 import { DocumentLayerSpecification } from './mapLayerType';
-import { convertGeoPointToGeoJSON, isGeoJSON } from '../utils/geo_formater';
+import { convertGeoPointToGeoJSON, fromWKT, isGeoJSON } from "../utils/geo_formater";
 import { getMaplibreBeforeLayerId, layerExistInMbSource } from './layersFunctions';
 
 interface MaplibreRef {
@@ -58,6 +58,11 @@ const buildGeometry = (fieldType: string, location: any) => {
       coordinates: location.coordinates,
     };
   }
+  const geometry = fromWKT(location);
+  if (geometry) {
+    return geometry;
+  }
+
   if (fieldType === 'geo_point') {
     // convert other supported formats to GeoJSON
     return convertGeoPointToGeoJSON(location);

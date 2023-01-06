@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import {parse} from 'wellknown';
+
 const geoJSONTypes: string[] = [
   'point',
   'linestring',
@@ -23,6 +25,13 @@ export function isGeoJSON(value: { type: any; coordinates: any }) {
     return true;
   }
   return false;
+}
+export function fromWKT(value: string) {
+  if (!value) return null;
+  if (typeof value !== 'string') {
+    return null;
+  }
+  return parse(value);
 }
 
 function buildGeoJSONOfTypePoint(lon: number, lat: number) {
@@ -50,6 +59,4 @@ export function convertGeoPointToGeoJSON(location: any) {
   if (values && (values.length === 2 || values.length === 3)) {
     return buildGeoJSONOfTypePoint(parseFloat(values[1].trim()), parseFloat(values[0].trim()));
   }
-  // TODO Geopoint as geohash & WKT Format
-  return undefined;
 }
