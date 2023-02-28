@@ -1,0 +1,10 @@
+#!/bin/bash
+ 
+set -o errexit
+set -o pipefail
+ 
+# clean lib dir on every build
+rm -rf build/*
+ 
+mkdir -p build/lib/commonjs/customImportMapDashboards/build/plugins
+cp customImportMapDashboards-*.zip build/lib/commonjs/customImportMapDashboards/build/plugins/customImportMapDashboards.zip
