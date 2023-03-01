@@ -9,3 +9,5 @@ dashboards-maps/java_pid*
 dashboards-maps/build
 java_pid*
 *.iml
+node_modules/
+
