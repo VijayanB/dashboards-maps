@@ -64,12 +64,16 @@ fi
 # shellcheck disable=SC2006
 NVM_VERSION=`nvm --version`
 echo "After Setting NVM Version: $NVM_VERSION"
- 
-echo "Running: sudo nvm use --delete-prefix $EXPECTED_NODE_VERSION"
-nvm use --delete-prefix "$EXPECTED_NODE_VERSION"
- 
+
+echo "nvm install $EXPECTED_NODE_VERSION"
 nvm install "$EXPECTED_NODE_VERSION"
- 
+echo "nvm use --delete-prefix $EXPECTED_NODE_VERSION"
+nvm use --delete-prefix "$EXPECTED_NODE_VERSION"
+echo "npm config delete prefix"
+npm config delete prefix
+echo "npm config set prefix $NVM_DIR/versions/node/$EXPECTED_NODE_VERSION"
+npm config set prefix $NVM_DIR/versions/node/$EXPECTED_NODE_VERSION
+
 # shellcheck disable=SC2006
 # shellcheck disable=SC2034
 NODE_VERSION=`node --version`
