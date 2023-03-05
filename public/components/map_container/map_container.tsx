@@ -34,7 +34,9 @@ import {
 } from '../../model/layersFunctions';
 import { MapsFooter } from './maps_footer';
 import { DisplayFeatures } from '../tooltip/display_features';
-import { TOOLTIP_STATE } from '../../../common/index';
+import { TOOLTIP_STATE } from '../../../common/constants/shared';
+import { DrawFilterProperties, SpatialFilterToolBar } from '../toolbar/SpatialFilterToolBar';
+import { DrawFilter } from '../draw_controls/DrawFilter';
 
 interface MapContainerProps {
   setLayers: (layers: MapLayerSpecification[]) => void;
@@ -52,6 +54,8 @@ interface MapContainerProps {
   isUpdatingLayerRender: boolean;
   setIsUpdatingLayerRender: (isUpdatingLayerRender: boolean) => void;
 }
+
+export type TooltipState = 'Feature' | 'Filter';
 
 export const MapContainer = ({
   setLayers,
@@ -79,6 +83,7 @@ export const MapContainer = ({
   // start with display feature
   const [tooltipState, setTooltipState] = useState<TOOLTIP_STATE>(TOOLTIP_STATE.DISPLAY_FEATURES);
 
+  const [filterProperties, setFilterProperties] = useState<DrawFilterProperties>();
   useEffect(() => {
     if (!mapContainer.current) return;
     const mbStyle = {
@@ -173,6 +178,12 @@ export const MapContainer = ({
   }, [refreshConfig]);
 
   useEffect(() => {
+    if (filterProperties?.mode) {
+      setTooltipState('Filter');
+    }
+  }, [filterProperties]);
+
+  useEffect(() => {
     if (!mounted) {
       return;
     }
@@ -249,6 +260,13 @@ export const MapContainer = ({
           setSelectedLayerConfig={setSelectedLayerConfig}
           setIsUpdatingLayerRender={setIsUpdatingLayerRender}
         />
+      )}
+      <div className="SpatialFilterToolbar-container">
+        {mounted && <SpatialFilterToolBar setFilterProperties={setFilterProperties} />}
+      </div>
+
+      {mounted && tooltipState === 'Filter' && (
+        <DrawFilter map={maplibreRef.current!} filterProperties={filterProperties!} />
       )}
       {mounted && tooltipState === TOOLTIP_STATE.DISPLAY_FEATURES && (
         <DisplayFeatures map={maplibreRef.current!} layers={layers} />

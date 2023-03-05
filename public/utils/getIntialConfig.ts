@@ -26,6 +26,7 @@ import {
   DOCUMENTS_DEFAULT_LABEL_COLOR,
   DOCUMENTS_DEFAULT_LABEL_BORDER_COLOR,
   DOCUMENTS_NONE_LABEL_BORDER_WIDTH,
+  DOCUMENTS_DEFAULT_IS_SPATIAL_FILTER_SUPPORTED,
 } from '../../common';
 import { MapState } from '../model/mapState';
 import { ConfigSchema } from '../../common/config';
@@ -62,6 +63,7 @@ export const getLayerConfigMap = (mapConfig: ConfigSchema) => ({
       tooltipFields: DOCUMENTS_DEFAULT_TOOLTIPS,
       showTooltips: DOCUMENTS_DEFAULT_SHOW_TOOLTIPS,
       displayTooltipsOnHover: DOCUMENTS_DEFAULT_DISPLAY_TOOLTIPS_ON_HOVER,
+      isSpatialFilterSupported: DOCUMENTS_DEFAULT_IS_SPATIAL_FILTER_SUPPORTED,
     },
     style: {
       ...getStyleColor(),

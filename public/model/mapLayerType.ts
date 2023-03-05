@@ -21,6 +21,7 @@ export type OSMLayerSpecification = {
   visibility: string;
   source: {
     dataURL: string;
+    isSpatialFilterSupported: boolean;
   };
   style: {
     styleURL: string;
@@ -46,6 +47,7 @@ export type DocumentLayerSpecification = {
     tooltipFields: string[];
     useGeoBoundingBoxFilter: boolean;
     filters: Filter[];
+    isSpatialFilterSupported: boolean;
   };
   style: {
     fillColor: string;
@@ -78,6 +80,7 @@ export type CustomTMSLayerSpecification = {
     url: string;
     customType: 'tms';
     attribution: string;
+    isSpatialFilterSupported: boolean;
   };
 };
 
@@ -99,5 +102,6 @@ export type CustomWMSLayerSpecification = {
     format: string;
     crs: string;
     bbox: string;
+    isSpatialFilterSupported: boolean;
   };
 };
