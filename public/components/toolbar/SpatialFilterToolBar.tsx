@@ -5,16 +5,16 @@
 import React from 'react';
 import { EuiFlexItem, EuiFlexGroup } from '@elastic/eui';
 import { FilterByPolygon } from './FilterByPolygon';
+import {DRAW_FILTER_MODES} from "../../../common/constants/shared";
 
 interface SpatialFilterToolBarProps {
   setFilterProperties: (properties: DrawFilterProperties) => void;
 }
 
-export type FilterModes = 'Polygon' | 'Rectangle';
 
 export interface DrawFilterProperties {
   relation: string;
-  mode: FilterModes;
+  mode: DRAW_FILTER_MODES;
   label: string;
 }
 

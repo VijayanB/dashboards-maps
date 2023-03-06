@@ -151,3 +151,8 @@ export const DRAW_FILTER_SHAPE_TITLE = 'DRAW SHAPE';
 export const DRAW_FILTER_POLYGON_DEFAULT_LABEL = 'polygon';
 export const DRAW_FILTER_POLYGON = 'Draw Polygon';
 export const DRAW_FILTER_POLYGON_RELATIONS = ['intersects', 'disjoint', 'within'];
+
+export enum DRAW_FILTER_MODES {
+  NONE = 'NONE',
+  POLYGON = 'POLYGON',
+}

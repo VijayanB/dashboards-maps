@@ -34,7 +34,7 @@ import {
 } from '../../model/layersFunctions';
 import { MapsFooter } from './maps_footer';
 import { DisplayFeatures } from '../tooltip/display_features';
-import { TOOLTIP_STATE } from '../../../common/constants/shared';
+import { DRAW_FILTER_MODES, TOOLTIP_STATE } from '../../../common/constants/shared';
 import { DrawFilterProperties, SpatialFilterToolBar } from '../toolbar/SpatialFilterToolBar';
 import { DrawFilter } from '../draw_controls/DrawFilter';
 
@@ -54,8 +54,6 @@ interface MapContainerProps {
   isUpdatingLayerRender: boolean;
   setIsUpdatingLayerRender: (isUpdatingLayerRender: boolean) => void;
 }
-
-export type TooltipState = 'Feature' | 'Filter';
 
 export const MapContainer = ({
   setLayers,
@@ -178,9 +176,11 @@ export const MapContainer = ({
   }, [refreshConfig]);
 
   useEffect(() => {
-    if (filterProperties?.mode) {
-      setTooltipState('Filter');
-    }
+    const currentTooltipState: TOOLTIP_STATE =
+      filterProperties?.mode === DRAW_FILTER_MODES.NONE
+        ? TOOLTIP_STATE.DISPLAY_FEATURES
+        : TOOLTIP_STATE.DRAW_FILTER;
+    setTooltipState(currentTooltipState);
   }, [filterProperties]);
 
   useEffect(() => {
@@ -265,7 +265,7 @@ export const MapContainer = ({
         {mounted && <SpatialFilterToolBar setFilterProperties={setFilterProperties} />}
       </div>
 
-      {mounted && tooltipState === 'Filter' && (
+      {mounted && tooltipState === TOOLTIP_STATE.DRAW_FILTER && (
         <DrawFilter map={maplibreRef.current!} filterProperties={filterProperties!} />
       )}
       {mounted && tooltipState === TOOLTIP_STATE.DISPLAY_FEATURES && (
