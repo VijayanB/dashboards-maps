@@ -6,6 +6,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Map as Maplibre } from 'maplibre-gl';
+import { Feature } from 'geojson';
 import { SimpleSavedObject } from '../../../../../src/core/public';
 import { MapContainer } from '../map_container';
 import { MapTopNavMenu } from '../map_top_nav';
@@ -56,8 +57,9 @@ export const MapComponent = ({
     savedObjects: { client: savedObjectsClient },
   } = services;
   const [layers, setLayers] = useState<MapLayerSpecification[]>([]);
-  const [savedMapObject, setSavedMapObject] =
-    useState<SimpleSavedObject<MapSavedObjectAttributes> | null>();
+  const [savedMapObject, setSavedMapObject] = useState<SimpleSavedObject<
+    MapSavedObjectAttributes
+  > | null>();
   const [layersIndexPatterns, setLayersIndexPatterns] = useState<IndexPattern[]>([]);
   const maplibreRef = useRef<Maplibre | null>(null);
   const [mapState, setMapState] = useState<MapState>(getInitialMapState());
@@ -82,8 +84,9 @@ export const MapComponent = ({
         setLayersIndexPatterns(savedIndexPatterns);
       });
     } else {
-      const initialDefaultLayer: MapLayerSpecification =
-        getLayerConfigMap(mapConfig)[OPENSEARCH_MAP_LAYER.type];
+      const initialDefaultLayer: MapLayerSpecification = getLayerConfigMap(mapConfig)[
+        OPENSEARCH_MAP_LAYER.type
+      ];
       initialDefaultLayer.name = MAP_LAYER_DEFAULT_NAME;
       setLayers([initialDefaultLayer]);
     }
@@ -122,6 +125,7 @@ export const MapComponent = ({
         query={query}
         isUpdatingLayerRender={isUpdatingLayerRender}
         setIsUpdatingLayerRender={setIsUpdatingLayerRender}
+        setMapState={setMapState}
       />
     </div>
   );

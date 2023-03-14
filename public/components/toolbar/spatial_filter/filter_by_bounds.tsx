@@ -6,25 +6,22 @@
 import React, { useState } from 'react';
 import { EuiPopover, EuiContextMenu, EuiPanel, EuiButtonIcon } from '@elastic/eui';
 import { FilterInputPanel } from './filter_input_panel';
-import polygon from '../../../images/polygon.svg';
+import bounds from '../../../images/polygon.svg';
 import {
   DrawFilterProperties,
-  DRAW_FILTER_POLYGON,
-  DRAW_FILTER_POLYGON_DEFAULT_LABEL,
+  DRAW_FILTER_BOUNDS,
   DRAW_FILTER_SHAPE_RELATIONS,
   DRAW_FILTER_SHAPE_TITLE,
+  DRAW_FILTER_BOUNDS_DEFAULT_LABEL,
 } from '../../../../common';
 import { FILTER_DRAW_MODE } from '../../../../common';
 
-interface FilterByPolygonProps {
+interface FilterByBoundsProps {
   setDrawFilterProperties: (properties: DrawFilterProperties) => void;
   isDrawActive: boolean;
 }
 
-export const FilterByPolygon = ({
-  setDrawFilterProperties,
-  isDrawActive,
-}: FilterByPolygonProps) => {
+export const FilterByBounds = ({ setDrawFilterProperties, isDrawActive }: FilterByBoundsProps) => {
   const [isPopoverOpen, setPopover] = useState(false);
 
   const onClick = () => {
@@ -50,38 +47,38 @@ export const FilterByPolygon = ({
       title: DRAW_FILTER_SHAPE_TITLE,
       content: (
         <FilterInputPanel
-          drawLabel={DRAW_FILTER_POLYGON}
-          defaultFilterLabel={DRAW_FILTER_POLYGON_DEFAULT_LABEL}
+          drawLabel={DRAW_FILTER_BOUNDS}
+          defaultFilterLabel={DRAW_FILTER_BOUNDS_DEFAULT_LABEL}
           relations={DRAW_FILTER_SHAPE_RELATIONS}
           onSubmit={onSubmit}
-          mode={FILTER_DRAW_MODE.POLYGON}
+          mode={FILTER_DRAW_MODE.BOUNDS}
         />
       ),
     },
   ];
 
-  const drawPolygonButton = (
+  const drawBoundsButton = (
     <EuiPanel paddingSize="none" className="spatialFilterToolbar__shape">
       <EuiButtonIcon
         color="text"
         size={'s'}
-        iconType={polygon}
+        iconType={bounds}
         onClick={onClick}
-        aria-label={'draw_filter_polygon'}
-        title={DRAW_FILTER_POLYGON}
+        aria-label={'draw_filter_bounds'}
+        title={DRAW_FILTER_BOUNDS}
         isDisabled={isDrawActive}
       />
     </EuiPanel>
   );
   return (
     <EuiPopover
-      id="drawPolygonId"
-      button={drawPolygonButton}
+      id="drawBoundsId"
+      button={drawBoundsButton}
       isOpen={isPopoverOpen}
       closePopover={closePopover}
       panelPaddingSize="none"
       anchorPosition="leftUp"
-      data-test-subj="drawPolygonPopOver"
+      data-test-subj="drawBoundsPopOver"
     >
       <EuiContextMenu initialPanelId={0} panels={panels} />
     </EuiPopover>

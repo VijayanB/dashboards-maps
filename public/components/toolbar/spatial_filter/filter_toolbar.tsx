@@ -7,6 +7,7 @@ import React from 'react';
 import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import { FilterByPolygon } from './filter_by_polygon';
 import { FILTER_DRAW_MODE, DrawFilterProperties } from '../../../../common';
+import { FilterByBounds } from './filter_by_bounds';
 
 interface SpatialFilterToolBarProps {
   setFilterProperties: (properties: DrawFilterProperties) => void;
@@ -23,9 +24,15 @@ export const SpatialFilterToolbar = ({
     });
   };
   const filterIconGroups = (
-    <EuiFlexItem>
-      <FilterByPolygon setDrawFilterProperties={setFilterProperties} isDrawActive={isDrawActive} />
-    </EuiFlexItem>
+    <>
+      <EuiFlexItem>
+        <FilterByPolygon
+          setDrawFilterProperties={setFilterProperties}
+          isDrawActive={isDrawActive}
+        />
+        <FilterByBounds setDrawFilterProperties={setFilterProperties} isDrawActive={isDrawActive} />
+      </EuiFlexItem>
+    </>
   );
   if (isDrawActive) {
     return (
@@ -35,7 +42,6 @@ export const SpatialFilterToolbar = ({
             {'Cancel'}
           </EuiButton>
         </EuiFlexItem>
-        {filterIconGroups}
       </EuiFlexGroup>
     );
   }

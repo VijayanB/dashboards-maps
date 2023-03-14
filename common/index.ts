@@ -12,6 +12,8 @@ import {
   MAPS_APP_ID,
   PLUGIN_NAME,
 } from './constants/shared';
+import {Filter, FilterMeta, LatLon} from "../../../src/plugins/data/common";
+import {Polygon} from "geojson";
 
 export {
   fromMBtoBytes,
@@ -154,6 +156,7 @@ export enum TOOLTIP_STATE {
 export enum FILTER_DRAW_MODE {
   NONE = 'none', // draw filter is inactive
   POLYGON = 'polygon', // Filter is active and set to draw polygon
+  BOUNDS = 'bounds', // Filter is active and set to draw bounds ( rectangle )
 }
 
 export interface DrawFilterProperties {
@@ -163,6 +166,19 @@ export interface DrawFilterProperties {
 }
 
 export const DRAW_FILTER_SHAPE_TITLE = 'DRAW SHAPE';
-export const DRAW_FILTER_POLYGON_DEFAULT_LABEL = 'polygon';
+export const DRAW_FILTER_SHAPE_RELATIONS = ['intersects', 'disjoint', 'within'];
 export const DRAW_FILTER_POLYGON = 'Draw Polygon';
-export const DRAW_FILTER_POLYGON_RELATIONS = ['intersects', 'disjoint', 'within'];
+
+export type GeoSpatialFilterMeta = FilterMeta & {
+  params: {
+    relation: string;
+    geometry: Polygon;
+  };
+};
+
+export type GeoSpatialFilter = Filter & {
+  meta: GeoSpatialFilterMeta;
+};
+export const DRAW_FILTER_POLYGON_DEFAULT_LABEL = 'polygon';
+export const DRAW_FILTER_BOUNDS = 'Draw bounds';
+export const DRAW_FILTER_BOUNDS_DEFAULT_LABEL = 'bounds';

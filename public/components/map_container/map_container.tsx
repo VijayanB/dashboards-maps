@@ -42,6 +42,8 @@ import { DisplayFeatures } from '../tooltip/display_features';
 import { TOOLTIP_STATE } from '../../../common';
 import { SpatialFilterToolbar } from '../toolbar/spatial_filter/filter_toolbar';
 import { DrawTooltip } from '../toolbar/spatial_filter/draw_tooltip';
+import { DrawFilterShape } from '../toolbar/spatial_filter/draw_filter_shape';
+import {Feature} from "geojson";
 
 interface MapContainerProps {
   setLayers: (layers: MapLayerSpecification[]) => void;
@@ -58,6 +60,7 @@ interface MapContainerProps {
   query?: Query;
   isUpdatingLayerRender: boolean;
   setIsUpdatingLayerRender: (isUpdatingLayerRender: boolean) => void;
+  setMapState: (mapState: MapState) => void;
 }
 
 export const MapContainer = ({
@@ -75,6 +78,7 @@ export const MapContainer = ({
   query,
   isUpdatingLayerRender,
   setIsUpdatingLayerRender,
+  setMapState,
 }: MapContainerProps) => {
   const { services } = useOpenSearchDashboards<MapServices>();
   const mapContainer = useRef(null);
@@ -249,6 +253,18 @@ export const MapContainer = ({
     }
   };
 
+  function addFeatures(features: Feature[]) {
+    let feature: Feature[] = [];
+    if (mapState.geoSpatialFilters) {
+      feature = [...mapState.geoSpatialFilters];
+    }
+    feature = [...feature, ...features];
+    setMapState({
+      ...mapState,
+      geoSpatialFilters: feature,
+    });
+  }
+
   return (
     <div className="map-main">
       {mounted && <MapsFooter map={maplibreRef.current!} zoom={zoom} />}
@@ -273,6 +289,14 @@ export const MapContainer = ({
       )}
       {mounted && Boolean(maplibreRef.current) && (
         <DrawTooltip map={maplibreRef.current!} mode={filterProperties.mode} />
+      )}
+      {mounted && tooltipState === TOOLTIP_STATE.FILTER_DRAW_SHAPE && (
+        <DrawFilterShape
+          map={maplibreRef.current!}
+          mode={filterProperties.mode}
+          updateFilterProperties={setFilterProperties}
+          addFeatures={addFeatures}
+        />
       )}
       <div className="SpatialFilterToolbar-container">
         {mounted && (
