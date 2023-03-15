@@ -1,5 +1,4 @@
-import { Query, TimeRange } from '../../../../src/plugins/data/common';
-import { GeoShapeFilter } from './geo/filter';
+import { GeoShapeFilterMeta, Query, TimeRange } from '../../../../src/plugins/data/common';
 
 export interface MapState {
   timeRange: TimeRange;
@@ -8,5 +7,5 @@ export interface MapState {
     pause: boolean;
     value: number;
   };
-  spatialFilters: GeoShapeFilter[];
+  spatialMetaFilters: GeoShapeFilterMeta[];
 }
