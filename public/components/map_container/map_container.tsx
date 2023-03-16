@@ -233,7 +233,7 @@ export const MapContainer = ({
         <DrawTooltip map={maplibreRef.current!} mode={filterProperties.mode} />
       )}
       <div className="SpatialFilterToolbar-container">
-        {mounted && (
+        {mounted && false && (
           <SpatialFilterToolbar
             setFilterProperties={setFilterProperties}
             isDrawActive={filterProperties.mode !== FILTER_DRAW_MODE.NONE}
