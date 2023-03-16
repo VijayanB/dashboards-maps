@@ -35,6 +35,8 @@ import { DisplayFeatures } from '../tooltip/display_features';
 import { TOOLTIP_STATE } from '../../../common';
 import { SpatialFilterToolbar } from '../toolbar/spatial_filter/filter_toolbar';
 import { DrawTooltip } from '../toolbar/spatial_filter/draw_tooltip';
+import {ShapeFilter} from "../../../../../src/plugins/data/common";
+import {GeoShapeRelation} from "@opensearch-project/opensearch/api/types";
 
 interface MapContainerProps {
   setLayers: (layers: MapLayerSpecification[]) => void;
@@ -51,6 +53,7 @@ interface MapContainerProps {
   query?: Query;
   isUpdatingLayerRender: boolean;
   setIsUpdatingLayerRender: (isUpdatingLayerRender: boolean) => void;
+  addSpatialFilter: (shape: ShapeFilter, label: string | null, relation: GeoShapeRelation) => void;
 }
 
 export const MapContainer = ({
@@ -68,6 +71,7 @@ export const MapContainer = ({
   query,
   isUpdatingLayerRender,
   setIsUpdatingLayerRender,
+  addSpatialFilter,
 }: MapContainerProps) => {
   const { services } = useOpenSearchDashboards<MapServices>();
   const mapContainer = useRef(null);
@@ -238,6 +242,7 @@ export const MapContainer = ({
           map={maplibreRef.current}
           filterProperties={filterProperties}
           updateFilterProperties={setFilterProperties}
+          addSpatialFilter={addSpatialFilter}
         />
       )}
       <div className="SpatialFilterToolbar-container">

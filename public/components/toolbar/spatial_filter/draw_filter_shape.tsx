@@ -7,6 +7,7 @@ import React, { Fragment, useEffect, useRef } from 'react';
 import { IControl, Map as Maplibre } from 'maplibre-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { Feature } from 'geojson';
+import { GeoShapeRelation } from '@opensearch-project/opensearch/api/types';
 import {
   DrawFilterProperties,
   FILTER_DRAW_MODE,
@@ -20,7 +21,7 @@ interface DrawFilterShapeProps {
   filterProperties: DrawFilterProperties;
   map: Maplibre;
   updateFilterProperties: (properties: DrawFilterProperties) => void;
-  addSpatialFilters: (shape: ShapeFilter) => void;
+  addSpatialFilter: (shape: ShapeFilter, label: string | null, relation: GeoShapeRelation) => void;
 }
 
 function getMapboxDrawMode(mode: FILTER_DRAW_MODE): string {
@@ -39,11 +40,24 @@ const isShapeFilter = (geometry: any): geometry is ShapeFilter => {
   return geometry && (geometry.type === 'Polygon' || geometry.type === 'MultiPolygon');
 };
 
+const toGeoShapeRelation = (relation?: string): GeoShapeRelation => {
+  switch (relation) {
+    case 'intersects':
+      return relation;
+    case 'within':
+      return relation;
+    case 'disjoint':
+      return relation;
+    default:
+      return 'intersects';
+  }
+};
+
 export const DrawFilterShape = ({
   filterProperties,
   map,
   updateFilterProperties,
-  addSpatialFilters,
+  addSpatialFilter,
 }: DrawFilterShapeProps) => {
   const onDraw = (event: { features: Feature[] }) => {
     updateFilterProperties({
@@ -51,7 +65,11 @@ export const DrawFilterShape = ({
     });
     event.features.map((feature) => {
       if (isShapeFilter(feature.geometry)) {
-        addSpatialFilters(feature.geometry);
+        addSpatialFilter(
+          feature.geometry,
+          filterProperties.filterLabel || null,
+          toGeoShapeRelation(filterProperties.relation)
+        );
       }
     });
   };

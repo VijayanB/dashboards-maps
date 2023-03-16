@@ -47,7 +47,7 @@ export const buildBBoxFilter = (
 };
 
 export const buildGeoShapeFilterMeta = (
-  filterLabel: string,
+  filterLabel: string | null,
   filterShape: ShapeFilter,
   relation: GeoShapeRelation
 ): GeoShapeFilterMeta => {

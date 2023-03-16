@@ -28,6 +28,9 @@ import {
 } from '../../../../../src/plugins/data/public';
 import { MapState } from '../../model/mapState';
 import { ConfigSchema } from '../../../common/config';
+import {GeoShapeFilterMeta, ShapeFilter} from "../../../../../src/plugins/data/common";
+import {buildGeoShapeFilter, buildGeoShapeFilterMeta} from "../../model/geo/filter";
+import {GeoShapeRelation} from "@opensearch-project/opensearch/api/types";
 
 interface MapPageProps {
   mapConfig: ConfigSchema;
@@ -90,6 +93,22 @@ export const MapComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const addSpatialFilter = (
+    shape: ShapeFilter,
+    label: string | null,
+    relation: GeoShapeRelation
+  ) => {
+    const filterMeta: GeoShapeFilterMeta = buildGeoShapeFilterMeta(label, shape, relation);
+    let geoShapeFilterMeta: GeoShapeFilterMeta[] = [];
+    if (mapState.spatialMetaFilters) {
+      geoShapeFilterMeta = [...mapState.spatialMetaFilters];
+    }
+    setMapState({
+      ...mapState,
+      spatialMetaFilters: [...geoShapeFilterMeta, filterMeta],
+    });
+  };
+
   return (
     <div className="map-page">
       {isReadOnlyMode ? null : (
@@ -122,6 +141,7 @@ export const MapComponent = ({
         query={query}
         isUpdatingLayerRender={isUpdatingLayerRender}
         setIsUpdatingLayerRender={setIsUpdatingLayerRender}
+        addSpatialFilter={addSpatialFilter}
       />
     </div>
   );
