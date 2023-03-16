@@ -7,5 +7,5 @@ export interface MapState {
     pause: boolean;
     value: number;
   };
-  spatialMetaFilters: GeoShapeFilterMeta[];
+  spatialMetaFilters?: GeoShapeFilterMeta[];
 }

@@ -27,7 +27,7 @@ import {
 import { MapServices } from '../types';
 import { MapState } from './mapState';
 import { GeoBounds, getBounds } from './map/boundary';
-import { buildBBoxFilter } from './geo/filter';
+import { buildBBoxFilter, buildGeoShapeFilter } from './geo/filter';
 
 interface MaplibreRef {
   current: Maplibre | null;
@@ -130,6 +130,12 @@ export const handleDataLayerRender = (
   };
   const geoBoundingBoxFilter: GeoBoundingBoxFilter = buildBBoxFilter(geoField, mapBounds, meta);
   filters.push(geoBoundingBoxFilter);
+
+  // add spatial filters if added in mapState
+
+  mapState?.spatialMetaFilters?.map((value) => {
+    filters.push(buildGeoShapeFilter(geoField, value));
+  });
 
   return prepareDataLayerSource(mapLayer, mapState, services, filters, timeRange, query).then(
     (result) => {
