@@ -14,11 +14,13 @@ import {
   MAPBOX_GL_DRAW_CREATE_LISTENER,
 } from '../../../../common';
 import { DrawRectangle } from '../../draw/modes/rectangle';
+import { GeoShapeFilter, ShapeFilter } from '../../../../../../src/plugins/data/common';
 
 interface DrawFilterShapeProps {
   filterProperties: DrawFilterProperties;
   map: Maplibre;
   updateFilterProperties: (properties: DrawFilterProperties) => void;
+  addSpatialFilters: (shape: ShapeFilter) => void;
 }
 
 function getMapboxDrawMode(mode: FILTER_DRAW_MODE): string {
@@ -31,15 +33,26 @@ function getMapboxDrawMode(mode: FILTER_DRAW_MODE): string {
       return MAPBOX_GL_DRAW_MODES.SIMPLE_SELECT;
   }
 }
+export const isGeoShapeFilter = (filter: any): filter is GeoShapeFilter => filter?.geo_shape;
+
+const isShapeFilter = (geometry: any): geometry is ShapeFilter => {
+  return geometry && (geometry.type === 'Polygon' || geometry.type === 'MultiPolygon');
+};
 
 export const DrawFilterShape = ({
   filterProperties,
   map,
   updateFilterProperties,
+  addSpatialFilters,
 }: DrawFilterShapeProps) => {
   const onDraw = (event: { features: Feature[] }) => {
     updateFilterProperties({
       mode: FILTER_DRAW_MODE.NONE,
+    });
+    event.features.map((feature) => {
+      if (isShapeFilter(feature.geometry)) {
+        addSpatialFilters(feature.geometry);
+      }
     });
   };
   const mapboxDrawRef = useRef<MapboxDraw>(
