@@ -60,9 +60,6 @@ export const DrawFilterShape = ({
   addSpatialFilter,
 }: DrawFilterShapeProps) => {
   const onDraw = (event: { features: Feature[] }) => {
-    updateFilterProperties({
-      mode: FILTER_DRAW_MODE.NONE,
-    });
     event.features.map((feature) => {
       if (isShapeFilter(feature.geometry)) {
         addSpatialFilter(
@@ -71,6 +68,9 @@ export const DrawFilterShape = ({
           toGeoShapeRelation(filterProperties.relation)
         );
       }
+    });
+    updateFilterProperties({
+      mode: FILTER_DRAW_MODE.NONE,
     });
   };
   const mapboxDrawRef = useRef<MapboxDraw>(

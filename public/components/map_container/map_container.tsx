@@ -186,6 +186,10 @@ export const MapContainer = ({
   }, [layers, mounted, timeRange, filters, query, mapState, isReadOnlyMode]);
 
   useEffect(() => {
+    renderDataLayers(layers, mapState, services, maplibreRef, timeRange, filters, query);
+  }, [mapState.spatialMetaFilters]);
+
+  useEffect(() => {
     const currentTooltipState: TOOLTIP_STATE =
       filterProperties?.mode === FILTER_DRAW_MODE.NONE
         ? TOOLTIP_STATE.DISPLAY_FEATURES

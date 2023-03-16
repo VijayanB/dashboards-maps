@@ -85,8 +85,9 @@ export const MapComponent = ({
         setLayersIndexPatterns(savedIndexPatterns);
       });
     } else {
-      const initialDefaultLayer: MapLayerSpecification =
-        getLayerConfigMap(mapConfig)[OPENSEARCH_MAP_LAYER.type];
+      const initialDefaultLayer: MapLayerSpecification = getLayerConfigMap(mapConfig)[
+        OPENSEARCH_MAP_LAYER.type
+      ];
       initialDefaultLayer.name = MAP_LAYER_DEFAULT_NAME;
       setLayers([initialDefaultLayer]);
     }

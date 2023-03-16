@@ -4,6 +4,7 @@
  */
 
 import { Map as Maplibre } from 'maplibre-gl';
+import { GeoShapeRelation } from '@opensearch-project/opensearch/api/types';
 import { MapLayerSpecification } from './mapLayerType';
 import { DASHBOARDS_MAPS_LAYER_TYPE } from '../../common';
 import {
@@ -32,6 +33,15 @@ import { buildBBoxFilter, buildGeoShapeFilter } from './geo/filter';
 interface MaplibreRef {
   current: Maplibre | null;
 }
+
+const getSupportedOperations = (field: string): GeoShapeRelation[] => {
+  if (field === 'geo_point') {
+    return ['intersects'];
+  } else if (field === 'geo_shape') {
+    return ['intersects', 'within', 'disjoint'];
+  }
+  return [];
+};
 
 export const prepareDataLayerSource = (
   layer: MapLayerSpecification,
@@ -134,7 +144,9 @@ export const handleDataLayerRender = (
   // add spatial filters if added in mapState
 
   mapState?.spatialMetaFilters?.map((value) => {
-    filters.push(buildGeoShapeFilter(geoField, value));
+    if (getSupportedOperations(geoFieldType).includes(value.params.relation)) {
+      filters.push(buildGeoShapeFilter(geoField, value));
+    }
   });
 
   return prepareDataLayerSource(mapLayer, mapState, services, filters, timeRange, query).then(
