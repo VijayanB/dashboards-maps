@@ -6,6 +6,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Map as Maplibre, NavigationControl } from 'maplibre-gl';
 import { debounce, throttle } from 'lodash';
+import { GeoShapeRelation } from '@opensearch-project/opensearch/api/types';
 import { LayerControlPanel } from '../layer_control_panel';
 import './map_container.scss';
 import { DrawFilterProperties, FILTER_DRAW_MODE, MAP_INITIAL_STATE } from '../../../common';
@@ -35,8 +36,7 @@ import { DisplayFeatures } from '../tooltip/display_features';
 import { TOOLTIP_STATE } from '../../../common';
 import { SpatialFilterToolbar } from '../toolbar/spatial_filter/filter_toolbar';
 import { DrawTooltip } from '../toolbar/spatial_filter/draw_tooltip';
-import {ShapeFilter} from "../../../../../src/plugins/data/common";
-import {GeoShapeRelation} from "@opensearch-project/opensearch/api/types";
+import { ShapeFilter } from '../../../../../src/plugins/data/common';
 
 interface MapContainerProps {
   setLayers: (layers: MapLayerSpecification[]) => void;

@@ -6,6 +6,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Map as Maplibre } from 'maplibre-gl';
+import { GeoShapeRelation } from '@opensearch-project/opensearch/api/types';
+import classNames from 'classnames';
 import { SimpleSavedObject } from '../../../../../src/core/public';
 import { MapContainer } from '../map_container';
 import { MapTopNavMenu } from '../map_top_nav';
@@ -28,9 +30,9 @@ import {
 } from '../../../../../src/plugins/data/public';
 import { MapState } from '../../model/mapState';
 import { ConfigSchema } from '../../../common/config';
-import {GeoShapeFilterMeta, ShapeFilter} from "../../../../../src/plugins/data/common";
-import {buildGeoShapeFilter, buildGeoShapeFilterMeta} from "../../model/geo/filter";
-import {GeoShapeRelation} from "@opensearch-project/opensearch/api/types";
+import { GeoShapeFilterMeta, ShapeFilter } from '../../../../../src/plugins/data/common';
+import { buildGeoShapeFilterMeta } from '../../model/geo/filter';
+import { FilterBar } from '../filter_bar/filter_bar';
 
 interface MapPageProps {
   mapConfig: ConfigSchema;
@@ -59,8 +61,9 @@ export const MapComponent = ({
     savedObjects: { client: savedObjectsClient },
   } = services;
   const [layers, setLayers] = useState<MapLayerSpecification[]>([]);
-  const [savedMapObject, setSavedMapObject] =
-    useState<SimpleSavedObject<MapSavedObjectAttributes> | null>();
+  const [savedMapObject, setSavedMapObject] = useState<SimpleSavedObject<
+    MapSavedObjectAttributes
+  > | null>();
   const [layersIndexPatterns, setLayersIndexPatterns] = useState<IndexPattern[]>([]);
   const maplibreRef = useRef<Maplibre | null>(null);
   const [mapState, setMapState] = useState<MapState>(getInitialMapState());
@@ -110,6 +113,18 @@ export const MapComponent = ({
     });
   };
 
+  const onFiltersUpdated = (newFilters: GeoShapeFilterMeta[]) => {
+    setMapState({
+      ...mapState,
+      spatialMetaFilters: [...newFilters],
+    });
+  };
+
+  const filterGroupClasses = classNames('globalFilterGroup__wrapper', {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'globalFilterGroup__wrapper-isVisible': !!mapState.spatialMetaFilters?.length,
+  });
+
   return (
     <div className="map-page">
       {isReadOnlyMode ? null : (
@@ -126,7 +141,17 @@ export const MapComponent = ({
           setIsUpdatingLayerRender={setIsUpdatingLayerRender}
         />
       )}
-
+      {!!mapState.spatialMetaFilters?.length && (
+        <div id="SpatiallFilterGroup" className="globalQueryBar">
+          <div className={filterGroupClasses}>
+            <FilterBar
+              className="globalFilterGroup__filterBar"
+              filters={mapState.spatialMetaFilters}
+              onFiltersUpdated={onFiltersUpdated}
+            />
+          </div>
+        </div>
+      )}
       <MapContainer
         layers={layers}
         setLayers={setLayers}

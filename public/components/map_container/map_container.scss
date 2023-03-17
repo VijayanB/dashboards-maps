@@ -32,8 +32,8 @@
 }
 
 .SpatialFilterToolbar-container {
-  z-index: 1;
-  position: absolute;
-  top:  ($euiSizeM + $euiSizeS) + ($euiSizeXL * 5);
-  right: $euiSizeS;
+  z-index: 2;
+  position: relative;
+  right: $euiSizeM;
+  top: ($euiSizeM + $euiSizeS) + ($euiSizeXL * 5);
 }
