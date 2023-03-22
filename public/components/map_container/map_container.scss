@@ -33,7 +33,7 @@
 
 .SpatialFilterToolbar-container {
   z-index: 2;
-  position: relative;
-  right: $euiSizeM;
-  top: ($euiSizeM + $euiSizeS) + ($euiSizeXL * 5);
+  position: absolute;
+  margin-left: 97.8%;
+  margin-top: 6%;
 }
