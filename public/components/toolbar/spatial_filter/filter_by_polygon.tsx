@@ -19,13 +19,11 @@ import { FILTER_DRAW_MODE } from '../../../../common';
 interface FilterByPolygonProps {
   setDrawFilterProperties: (properties: DrawFilterProperties) => void;
   isDrawActive: boolean;
-  mode: FILTER_DRAW_MODE;
 }
 
 export const FilterByPolygon = ({
   setDrawFilterProperties,
   isDrawActive,
-  mode,
 }: FilterByPolygonProps) => {
   const [isPopoverOpen, setPopover] = useState(false);
 
@@ -35,13 +33,6 @@ export const FilterByPolygon = ({
 
   const closePopover = () => {
     setPopover(false);
-  };
-
-  const onCancel = () => {
-    setDrawFilterProperties({
-      mode: FILTER_DRAW_MODE.NONE,
-    });
-    closePopover();
   };
 
   const onSubmit = (input: { relation: string; label: string; mode: FILTER_DRAW_MODE }) => {
@@ -80,16 +71,6 @@ export const FilterByPolygon = ({
         title={DRAW_FILTER_POLYGON}
         isDisabled={isDrawActive}
       />
-      {isDrawActive && mode === FILTER_DRAW_MODE.POLYGON && (
-        <EuiButton
-          fill
-          size="s"
-          onClick={onCancel}
-          style={{ position: 'absolute', transform: 'translateX(calc(-100% - 20px))', left: 0 }}
-        >
-          {'Cancel'}
-        </EuiButton>
-      )}
     </EuiPanel>
   );
   return (

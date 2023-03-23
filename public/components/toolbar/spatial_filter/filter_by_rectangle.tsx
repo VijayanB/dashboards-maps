@@ -20,13 +20,11 @@ import { FILTER_DRAW_MODE } from '../../../../common';
 interface FilterByRectangleProps {
   setDrawFilterProperties: (properties: DrawFilterProperties) => void;
   isDrawActive: boolean;
-  mode: FILTER_DRAW_MODE;
 }
 
 export const FilterByRectangle = ({
   setDrawFilterProperties,
   isDrawActive,
-  mode,
 }: FilterByRectangleProps) => {
   const [isPopoverOpen, setPopover] = useState(false);
 
@@ -36,13 +34,6 @@ export const FilterByRectangle = ({
 
   const closePopover = () => {
     setPopover(false);
-  };
-
-  const onCancel = () => {
-    setDrawFilterProperties({
-      mode: FILTER_DRAW_MODE.NONE,
-    });
-    closePopover();
   };
 
   const onSubmit = (input: { relation: string; label: string; mode: FILTER_DRAW_MODE }) => {
@@ -81,20 +72,6 @@ export const FilterByRectangle = ({
         title={DRAW_FILTER_RECTANGLE}
         isDisabled={isDrawActive}
       />
-      {isDrawActive && mode === FILTER_DRAW_MODE.RECTANGLE && (
-        <EuiButton
-          fill
-          size="s"
-          title={'Cancel'}
-          onClick={onCancel}
-          style={{
-            zIndex: 2,
-            position: 'absolute',
-            transform: 'translateX(calc(-100% - 20px))',
-            left: 0,
-          }}
-        />
-      )}
     </EuiPanel>
   );
   return (
