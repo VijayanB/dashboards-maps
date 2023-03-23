@@ -4,6 +4,7 @@
  */
 
 .spatialFilterToolbar__shape{
+  z-index: 2;
   position: absolute;
 
   .euiButtonIcon {

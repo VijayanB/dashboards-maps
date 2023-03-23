@@ -7,6 +7,7 @@
 @import "../../variables";
 
 .mapAppContainer, .map-page, .map-container, .map-main{
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -32,8 +33,8 @@
 }
 
 .SpatialFilterToolbar-container {
-  z-index: 2;
+  z-index: 1;
   position: absolute;
-  margin-left: 97.8%;
-  margin-top: 6%;
+  top:  (2 * $euiSizeS) + ($euiSizeXL * 4);
+  right: $euiSizeS;
 }

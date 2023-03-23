@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { EuiPopover, EuiContextMenu, EuiPanel, EuiButtonIcon } from '@elastic/eui';
+import { EuiPopover, EuiContextMenu, EuiPanel, EuiButtonIcon, EuiButton } from '@elastic/eui';
 import { FilterInputPanel } from './filter_input_panel';
 // TODO: replace with rectangle image file once available
 import rectangle from '../../../images/polygon.svg';
@@ -20,11 +20,13 @@ import { FILTER_DRAW_MODE } from '../../../../common';
 interface FilterByRectangleProps {
   setDrawFilterProperties: (properties: DrawFilterProperties) => void;
   isDrawActive: boolean;
+  mode: FILTER_DRAW_MODE;
 }
 
 export const FilterByRectangle = ({
   setDrawFilterProperties,
   isDrawActive,
+  mode,
 }: FilterByRectangleProps) => {
   const [isPopoverOpen, setPopover] = useState(false);
 
@@ -34,6 +36,13 @@ export const FilterByRectangle = ({
 
   const closePopover = () => {
     setPopover(false);
+  };
+
+  const onCancel = () => {
+    setDrawFilterProperties({
+      mode: FILTER_DRAW_MODE.NONE,
+    });
+    closePopover();
   };
 
   const onSubmit = (input: { relation: string; label: string; mode: FILTER_DRAW_MODE }) => {
@@ -72,6 +81,20 @@ export const FilterByRectangle = ({
         title={DRAW_FILTER_RECTANGLE}
         isDisabled={isDrawActive}
       />
+      {isDrawActive && mode === FILTER_DRAW_MODE.RECTANGLE && (
+        <EuiButton
+          fill
+          size="s"
+          title={'Cancel'}
+          onClick={onCancel}
+          style={{
+            zIndex: 2,
+            position: 'absolute',
+            transform: 'translateX(calc(-100% - 20px))',
+            left: 0,
+          }}
+        />
+      )}
     </EuiPanel>
   );
   return (
